@@ -6,21 +6,21 @@ type Lexer struct {
 	input        string
 	position     int  // current position in input
 	readPosition int  // current reading position
-	ch           byte // current character
+	CurrentCh    byte // current character
 }
 
 func NewLexer(input string) *Lexer {
 	l := &Lexer{input: input}
-	l.readChar()
+	l.ReadChar()
 	return l
 }
 
-// reads the next character from the input data
-func (l *Lexer) readChar() {
+// ReadChar reads the next character from the input data
+func (l *Lexer) ReadChar() {
 	if l.readPosition >= len(l.input) {
-		l.ch = 0 // 0 is EOF
+		l.CurrentCh = 0 // 0 is EOF
 	} else {
-		l.ch = l.input[l.readPosition]
+		l.CurrentCh = l.input[l.readPosition]
 	}
 	l.position = l.readPosition
 	l.readPosition++
@@ -30,16 +30,16 @@ func (l *Lexer) readChar() {
 func (l *Lexer) NextToken() token.Token {
 	var tok token.Token
 
-	switch l.ch {
+	switch l.CurrentCh {
 	case '<':
-		tok = newToken(token.LEFT_ANGLE, l.ch)
+		tok = newToken(token.LEFT_ANGLE, l.CurrentCh)
 	case '>':
-		tok = newToken(token.RIGHT_ANGLE, l.ch)
+		tok = newToken(token.RIGHT_ANGLE, l.CurrentCh)
 	default:
-		tok = newToken(token.ILLEGAL, l.ch)
+		tok = newToken(token.ILLEGAL, l.CurrentCh)
 	}
 
-	l.readChar()
+	l.ReadChar()
 	return tok
 }
 
